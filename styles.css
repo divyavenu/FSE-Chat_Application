@@ -1,0 +1,49 @@
+body{
+
+		font-family:Helvetica;
+		font-size: 20px;
+	}
+
+	#wrapper, #setname {
+    margin:0 auto;
+    padding-bottom:25px;
+    background:#EBF4FB;
+    width:504px;
+    border:1px solid #ACD8F0; }
+
+    #setname { padding-top:18px; }
+
+
+	#Name { 
+		float: center;
+		padding:12.5px 25px 12.5px 25px; }
+  
+
+	#chat{
+			background: radial-gradient(circle, #666, #999);
+		    text-align:left;
+		    margin:0 auto;
+		    margin-bottom:25px;
+		    padding:10px;;
+		    border:1px solid #ACD8F0;
+		    overflow:auto; }
+			
+		}
+
+	#message{
+    width:395px;
+    border:1px solid #ACD8F0; }
+
+	#chatWrap{
+
+			margin-right: 10%;
+			margin-left: 10%;
+			margin-top: 10%;	
+			background-image: url("background.jpg");		
+			border:none;
+		}
+
+	#contentWrap{
+		
+			display: none;
+		}

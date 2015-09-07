@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<title>Chat Room</title>
+	<link rel="stylesheet" type="text/css" href="styles.css"background-image: url("background.jpg")>
+
+</head>
+
+<body>
+<div id="Wrapper">
+	<div id="Name">
+		<h1>Welcome to FSE ChatRoom </h1>
+		<p id="name_err"></p>
+		<form id="setname">
+			<p>Enter a username: </p>
+			<input type="text" size="35" id="user_name">
+			<input type="submit"  id="enter" value="Enter">
+		</form>
+	</div>
+	<div id="contentWrap">
+		<div id="chatWrap">
+			<h1>Welcome to FSE Chat </h1>
+			<div id="chat"></div>
+			
+			<form id="send-message">
+				<input type="text" size="35" id="message">
+				<input type="submit">
+			</form>
+		</div>
+		<div id="users"></div>
+	</div>
+</div>
+	
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		jQuery(function($){
+			var socket = io.connect();
+			var $messageForm = $('#send-message');
+			var $messageBox = $('#message');
+			var $chat = $('#chat');
+			var $nameForm = $('#setname');
+			var $name_err = $('#name_err');
+			var $namebox = $('#user_name');
+			var $users = $('#users')
+
+			$nameForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('new user',$namebox.val(),function(data){
+					if(data){
+						$('#Name').hide();
+						$('#contentWrap').show();
+					}
+					else{
+						$name_err.html('That name is already taken, Try Again.');
+					}
+				});
+				$namebox.val('');
+			});
+			
+			$messageForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('send message', $messageBox.val());
+				$messageBox.val('');
+			});
+			
+			socket.on('old message',function(data){
+				
+				$chat.append(data.time+ "\t \t"+ "<b>"+ data.user_nm+' : '+"</b>"+"<br/>"+data.msg  +"<hr>"+"<br/>");
+			});
+			socket.on('new message', function(data){
+				
+				$chat.append(data.time+ "\t \t"+ "<b>"+ data.user_nm+' : '+"</b>"+"<br/>"+data.msg  +"<hr>"+"<br/>");
+			});
+
+			socket.on('usernames',function(data){
+				var all_users='';
+				for(i=0;i<data.length;i++){
+					all_users+=data[i]+'<br/>'
+				}
+				//$users.html(all_users);
+
+			});
+
+		});
+	</script>
+</body>
+</html>
